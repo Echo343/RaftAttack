@@ -18,7 +18,9 @@ namespace com.blargs.raft.raftattack.Patches
             switch(newState)
             {
                 case SharkState.AttackRaft:
+#if DEBUG
                     RConsole.Log(newState.ToString());
+#endif
                     RaftAttack.SetActive(__instance);
                     break;
                 default:

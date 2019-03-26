@@ -1,16 +1,14 @@
 using Harmony;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace com.blargs.raft.raftattack
 {
     [ModTitle("RaftAttack")]
-    [ModDescription("Shows an alert when the shark is attacking the raft.\nIcon made by smalllikeart <https://www.flaticon.com/authors/smalllikeart> from https://www.flaticon.com/ is licensed by http://creativecommons.org/licenses/by/3.0/ \nSpecial thanks to TeigRolle for his work on SharkAlarm and his willing to help with his knowledge of Unity and AssetBundles.")]
+    [ModDescription("Shows an alert when the shark is attacking the raft.\nIcon made by smalllikeart <https://www.flaticon.com/authors/smalllikeart> from https://www.flaticon.com/ is licensed by http://creativecommons.org/licenses/by/3.0/ \n\nSpecial thanks to TeigRolle for his work on SharkAlarm and his willing to help with his knowledge of Unity and AssetBundles.")]
     [ModAuthor("Echo343")]
     [ModIconUrl("https://i.imgur.com/sCXgE7Q.png")]
     [ModWallpaperUrl("https://i.imgur.com/Hy0XmKb.png")]
@@ -33,7 +31,7 @@ namespace com.blargs.raft.raftattack
 
         private AssetBundle bundle;
         private GameObject canvasPrefab;
-        private const string ASSET_BUNDLE_PATH = "/mods/ModData/RaftAttack/raftAttack.asset";
+        private const string ASSET_BUNDLE_PATH = "/mods/ModData/RaftAttack/raftattack.asset";
         private Image[] images;
 
         private Gradient colorG = new Gradient();
@@ -64,10 +62,12 @@ namespace com.blargs.raft.raftattack
                 black,
                 red
             };
-            RConsole.registerCommand("RaftAttackAttackRaft", "Cause the shark to attack the raft.", "attackRaftRaftAttack", new Action(this.AttackRaft));
-            RConsole.registerCommand("RaftAttackOffsetUI", "Offsets the UI incase other mods are using the space.", "offsetUIRaftAttack", new Action(this.OffsetUI));
-            RConsole.registerCommand("RaftAttackDebugStuff", "", "debugRaftRaftAttack", new Action(this.DebugStuff));
+            RConsole.registerCommand(typeof(RaftAttack), "Cause the shark to attack the raft.", "attackRaftRaftAttack", new Action(this.AttackRaft));
+            RConsole.registerCommand(typeof(RaftAttack), "Offsets the UI incase other mods are using the space.", "offsetUIRaftAttack", new Action(this.OffsetUI));
+#if DEBUG
+            RConsole.registerCommand(typeof(RaftAttack), "", "debugRaftRaftAttack", new Action(this.DebugStuff));
             RConsole.Log("RaftAttack loaded!");
+#endif
         }
 
         public void OffsetUI()
@@ -108,7 +108,7 @@ namespace com.blargs.raft.raftattack
             {
                 RaftAttack.iconPosition = UIPos.TOPRIGHT;
                 canvas = Instantiate<GameObject>(this.canvasPrefab);
-                this.images = (Image[]) canvas.GetComponentsInChildren<Image>();
+                this.images = canvas.GetComponentsInChildren<Image>();
                 canvas.SetActive(false);
 #if DEBUG
                 RConsole.Log("instantiating canvas");
@@ -123,7 +123,7 @@ namespace com.blargs.raft.raftattack
                     {
                         if (images[index].name != "Image")
                         {
-                            ((Graphic)images[index]).color = colorG.Evaluate(1f - num);
+                            images[index].color = colorG.Evaluate(1f - num);
                         }
                     }
                 }
@@ -172,11 +172,13 @@ namespace com.blargs.raft.raftattack
 
         public void OnModUnload()
         {
+#if DEBUG
             RConsole.Log("RaftAttack has been unloaded!");
-            RaftAttack.canvas = null;
+            RConsole.unregisterCommand("debugRaftRaftAttack");
+#endif
             RConsole.unregisterCommand("attackRaftRaftAttack");
             RConsole.unregisterCommand("offsetUIRaftAttack");
-            RConsole.unregisterCommand("debugRaftRaftAttack");
+            canvas = null;
             this.bundle.Unload(true);
             harmony.UnpatchAll(harmonyId);
             Destroy(gameObject);
