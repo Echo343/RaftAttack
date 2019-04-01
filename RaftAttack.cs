@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace com.blargs.raft.raftattack
 {
     [ModTitle("RaftAttack")]
-    [ModDescription("Shows an alert when the shark is attacking the raft.\nIcon made by smalllikeart <https://www.flaticon.com/authors/smalllikeart> from https://www.flaticon.com/ is licensed by http://creativecommons.org/licenses/by/3.0/ \n\nSpecial thanks to TeigRolle for his work on SharkAlarm and his willing to help with his knowledge of Unity and AssetBundles.")]
+    [ModDescription("Shows an alert when the shark is attacking the raft.\nIcon made by smalllikeart <https://www.flaticon.com/authors/smalllikeart> from https://www.flaticon.com/ is licensed by http://creativecommons.org/licenses/by/3.0/ \n\nSpecial thanks to TeigRolle for his work on SharkAlarm and his willingness to help with his knowledge of Unity and AssetBundles.")]
     [ModAuthor("Echo343")]
     [ModIconUrl("https://i.imgur.com/sCXgE7Q.png")]
     [ModWallpaperUrl("https://i.imgur.com/Hy0XmKb.png")]
